@@ -8,17 +8,6 @@ client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
 message = client.messages.create(
     to = '+16138699318', #receiver
     from_ = '+13437006039', #customer
-    body = 'Hi friend, send me your symptoms separated by spaces\n',
+    body = 'Hi friend',
 )
 print (message.sid)
-
-
-#user inputs question
-def get_symptoms():
-    '''
-    None -> None
-    '''
-    symptoms = input("Send me your symptoms separated by spaces\n")
-
-
-print ("Hello World")
