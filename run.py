@@ -4,6 +4,11 @@ from twilio.rest import TwilioRestClient
 import infermedica_api
 from twilio import twiml
 import main
+import sys
+sys.path.insert(0, '/python-api-master/infermedica_api')
+
+import test
+
 
 def testing():
     infermedica_api.configure(app_id='eb66ec4d', app_key='0dd627685ea5a3453973ea6aab7f36c1')
@@ -76,6 +81,7 @@ def sms():
     name1 = session.get('name1', '')
     age1 = session.get('age1', '')
     sexe1 = session.get('sexe1', '')
+    user_info1 = session.get('user_info1', '')
     counter += 1
 
     # Save the new counter value in the session
@@ -104,11 +110,9 @@ def sms():
     elif counter == 4 :
 
         session['sexe1'] = request.form['Body']
-        user_info = [name1, age1, sexe1]
-        response = user_info[0] + user_info[1] + user_info[2]
         resp = twiml.Response()
-
-        resp.message(response)
+        session['user_info1'] = [name1, age1, sexe1]
+        resp.message("Please send me your symptoms separated by commas.\n")
 
     else :
         name = request.form['Body']
@@ -116,7 +120,10 @@ def sms():
         resp.message("name")
     # Put it in a TwiML response
 
-    ##[name, sexe, age]
+
+
+
+
 
     return str(resp)
 

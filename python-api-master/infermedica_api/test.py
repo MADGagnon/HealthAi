@@ -6,66 +6,55 @@ def parse2(symptons_str):
     r = requests.post("https://api.infermedica.com/v2/parse", headers = myHeaders, data = symptons_str)
     return r
 
-infermedica_api.configure(app_id='eb66ec4d', app_key='0dd627685ea5a3453973ea6aab7f36c1')
+def getQuestion(sex_input, age_input, symptoms_list):
+    infermedica_api.configure(app_id='eb66ec4d', app_key='0dd627685ea5a3453973ea6aab7f36c1')
 
-api = infermedica_api.get_api()
+    api = infermedica_api.get_api()
 
-symptoms = ["eyes hurts","my head hurts really bad", "stomac hurts", "sleepy"]   #TODO CATCH TRUE SYMPTOMS
-# Create diagnosis object with initial patient information.
-# Note that time argument is optional here as well as in the add_symptom function
-request = infermedica_api.Diagnosis(sex='male', age=35)                      #TODO CATCH
+    symptoms = symptoms_list    #TODO CATCH TRUE SYMPTOMS
+    # Create diagnosis object with initial patient information.
+    # Note that time argument is optional here as well as in the add_symptom function
+    request = infermedica_api.Diagnosis(sex=sex_input, age=age_input)                      #TODO CATCH
 
-for i in symptoms:
-    json_symptoms = "{ \"text\": \""+ i + "\", \"include_tokens\": \"false\"}"
-    print(json_symptoms)
-    try:
-        symptom_id = parse2(json_symptoms).json()["mentions"][0]["id"]
-        request.add_symptom(symptom_id, 'present')
-    except IndexError:
-        pass
-    #print(symptom_id)
-
-
-
-
-# request.add_symptom('s_21', 'present')
-# request.add_symptom('s_98', 'present')
-# request.add_symptom('s_107', 'absent')
-
-#request.set_pursued_conditions(['c_33', 'c_49'])  # Optional
-
-# call diagnosis
-#request = api.diagnosis(request)
-
-# Access question asked by API
-#print(request.question)
-#
-
-conditionID = None
-max = 0
-while max < 0.7:
+    for i in symptoms:
+        json_symptoms = "{ \"text\": \""+ i + "\", \"include_tokens\": \"false\"}"
+        print(json_symptoms)
+        try:
+            symptom_id = parse2(json_symptoms).json()["mentions"][0]["id"]
+            request.add_symptom(symptom_id, 'present')
+        except IndexError:
+            pass
 
     request = api.diagnosis(request)
-    print(request.question.text)  #TODO SEND QUESTION
+    return request.question #question du resultat
 
-    # if request.question.type == "group_multiple":
-    #     #TODO
-    #     for i in request.question.items:
-    #         print(i['name'])
-    #         for j in i['choices']:
-    #             print(j['label'])
 
-    for i in request.question.items:
-        print(i['name'])                  #TODO SEND QUESTION
-        for j in i['choices']:
-            print(j['label'])            #TODO SEND ANSWER CHOICES
-        answer = "Yes"                   #TODO CATCH ANSWER
-        if answer == "Yes":
-            request.add_symptom(i["id"], 'present')
-        elif answer == "No":
-            request.add_symptom(i["id"], 'absent')
-        elif answer == "Don't know":
-            request.add_symptom(i["id"], "unknown")
+def rest_of_test():
+    conditionID = None
+    max = 0
+    while max < 0.7:
+
+        request = api.diagnosis(request)
+        print(request.question.text)  #TODO SEND QUESTION
+
+        # if request.question.type == "group_multiple":
+        #     #TODO
+        #     for i in request.question.items:
+        #         print(i['name'])
+        #         for j in i['choices']:
+        #             print(j['label'])
+
+        for i in request.question.items:
+            print(i['name'])                  #TODO SEND QUESTION
+            for j in i['choices']:
+                print(j['label'])            #TODO SEND ANSWER CHOICES
+            answer = "Yes"                   #TODO CATCH ANSWER
+            if answer == "Yes":
+                request.add_symptom(i["id"], 'present')
+            elif answer == "No":
+                request.add_symptom(i["id"], 'absent')
+            elif answer == "Don't know":
+                request.add_symptom(i["id"], "unknown")
 
     max = 0
     for i in request.conditions:
@@ -102,3 +91,4 @@ for i in request.conditions:
 #
 # # ... and so on, until you decide to stop the diagnostic interview.
 #
+getQuestion("male", 35, ["eyes hurts","my head hurts really bad", "stomac hurts", "sleepy"])
