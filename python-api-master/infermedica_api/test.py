@@ -10,12 +10,12 @@ infermedica_api.configure(app_id='eb66ec4d', app_key='0dd627685ea5a3453973ea6aab
 
 api = infermedica_api.get_api()
 
-symtoms = ["heart","my head hurts really bad", "headache", "heart"]
+symptoms = ["eyes hurts","my head hurts really bad", "stomac hurts", "sleepy"]
 # Create diagnosis object with initial patient information.
 # Note that time argument is optional here as well as in the add_symptom function
 request = infermedica_api.Diagnosis(sex='male', age=35)
 
-for i in symtoms:
+for i in symptoms:
     json_symptoms = "{ \"text\": \""+ i + "\", \"include_tokens\": \"false\"}"
     print(json_symptoms)
     try:
@@ -38,15 +38,33 @@ for i in symtoms:
 request = api.diagnosis(request)
 
 # Access question asked by API
-print(request.question)
+#print(request.question)
 #
 
 #TODO send question
 print(request.question.text)  # actual text of the question
 
-if request.question.type == "group_multiple":
-    #TODO
-    pass
+# if request.question.type == "group_multiple":
+#     #TODO
+#     for i in request.question.items:
+#         print(i['name'])
+#         for j in i['choices']:
+#             print(j['label'])
+
+for i in request.question.items:
+    print(i['name'])  #TODO SEND QUESTION
+    for j in i['choices']:
+        print(j['label'])  #TODO SEND QUESTION
+    answer = "Yes"  #TODO CATCH ANSWER
+    if answer == "Yes":
+        request.add_symptom(i["id"], 'present')
+    elif answer == "No":
+        request.add_symptom(i["id"], 'absent')
+    elif answer == "Don't know":
+        request.add_symptom(i["id"], "unknown")
+
+request = api.diagnosis(request)
+print(request.question.text)
 
 
 #print(request.question.items)  # list of related evidences with possible answers
@@ -56,12 +74,12 @@ if request.question.type == "group_multiple":
 # print(request.question.items[0]['choices'][0]['id'])  # answer id
 # print(request.question.items[0]['choices'][0]['label'])  # answer label
 #
-# # Access list of conditions with probabilities
-# #print(request.conditions)
-# #print(request.conditions[0]['id'])
-# print(request.conditions[0]['name'])
-# #print(request.conditions[0]['probability'])
-#
+# Access list of conditions with probabilities
+#print(request.conditions)
+#print(request.conditions[0]['id'])
+print(request.conditions[0]['name'])
+print(request.conditions[0]['probability'])
+
 # # Next update the request and get next question:
 # # Just example, the id and answer shall be taken from the real user answer
 # request.add_symptom(request.question.items[0]['id'], request.question.items[0]['choices'][1]['id'])
