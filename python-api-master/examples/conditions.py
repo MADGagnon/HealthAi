@@ -8,11 +8,11 @@ import infermedica_api
 if __name__ == '__main__':
     api = infermedica_api.get_api()
 
-    print('Conditions list:')
-    print(api.conditions_list(), end="\n\n")
+    # print('Conditions list:')
+    # print(api.conditions_list(), end="\n\n")
 
     print('Condition details:')
-    print(api.condition_details('c_221'), end="\n\n")
+    print(api.condition_details('c_221').__str__())
 
-    print('Non-existent condition details:')
-    print(api.condition_details('fail_test'))
+    #print('Non-existent condition details:')
+    #print(api.condition_details('fail_test'))

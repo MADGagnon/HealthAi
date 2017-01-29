@@ -15,8 +15,8 @@ def setup_examples():
 
     # !!! ENTER YOUR CREDENTIALS HERE !!!
     infermedica_api.configure({
-        'app_id': 'eb66ec4d',
-        'app_key': '0dd627685ea5a3453973ea6aab7f36c1',
+        'app_id': 'cf82ff04',
+        'app_key': 'e4ea29fdc3b01d4263da84423dc6cac0',
         'dev_mode': True  # Use only during development on production remove this parameter
     })
 
