@@ -15,20 +15,18 @@ def textToCellphone(phoneNbr):
     )
 
 def user_name():
-    name = str(input("What's your name?\n"))
+    name = "What's your name?\n"
     return name
 
-def set_up():
-    #if receive text from user (through HTTP)
-    print("Hi there, I'm [SickVick]! Let's get started.\n")
+def sexe():
+    sexe = ("What's your biological sexe?\n")
+    return sexe
 
-    name = user_name()
-    sexe = str(input("What's your biological sexe?\n"))
-    age = str(input("What's your age?\n"))
-    
-    userInfo = [name, sexe, age]
-    return userInfo
-            
+def age():
+    age = ("What's your age?\n")
+    return age
+
+
 
 def user_symptoms():
     symptoms = str(input("Please send me your symptoms separated by commas.\n"))
@@ -38,9 +36,9 @@ def user_symptoms():
 
 #main
 #receiveText()
-textToCellphone('+16138699318')
-set_up()
-user_symptoms()
+# textToCellphone('+16138699318')
+# set_up()
+# user_symptoms()
 
 
 

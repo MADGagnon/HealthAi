@@ -2,6 +2,8 @@ from flask import Flask, request, session
 import twilio.twiml
 from twilio.rest import TwilioRestClient
 import infermedica_api
+from twilio import twiml
+import main
 
 def testing():
     infermedica_api.configure(app_id='eb66ec4d', app_key='0dd627685ea5a3453973ea6aab7f36c1')
@@ -52,41 +54,70 @@ def testing():
     # ... and so on, until you decide to stop the diagnostic interview.
     return request.conditions[0]['name']
 
-def textToCellphone(phoneNbr):
-    # put your own credentials here
-    ACCOUNT_SID = 'ACbcdd2baea53b4be6b8732978947cf41b'
-    AUTH_TOKEN = '9c7ed39432e7db891055ea09f17aaa1d'
-
-    client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
-
-    client.messages.create(
-        to=phoneNbr,
-        from_='+14387951624',
-        body='hey from McHacks2017',
-    )
 
 
+# The session object makes use of a secret key.
+SECRET_KEY = 'a secret key'
 app = Flask(__name__)
-
+app.config.from_object(__name__)
 
 
 @app.route('/', methods=['GET', 'POST'])
 
 def sms():
 
+    number = request.form['From']
+    message_body = request.form['Body']
+
+
+    """Respond with the number of text messages sent between two parties."""
     # Increment the counter
     counter = session.get('counter', 0)
+    name1 = session.get('name1', '')
+    age1 = session.get('age1', '')
+    sexe1 = session.get('sexe1', '')
     counter += 1
 
     # Save the new counter value in the session
     session['counter'] = counter
 
-    number = request.form['From']
-    message_body = request.form['Body']
+    from_number = request.values.get('From')
 
-    resp = twilio.twiml.Response()
-    # resp.message('Hello {}, you said: {}'.format(number, message_body))
-    resp.message(counter)
+    if message_body == "reset" or counter == 1:
+        counter = 1
+        session['counter'] = counter
+        resp = twiml.Response()
+        resp.message("Hi there, I'm [SickVick]! Let's get started.\n\n"+main.user_name())
+
+    elif counter == 2 :
+
+        session['name1'] = request.form['Body']
+        resp = twiml.Response()
+        resp.message(main.age())
+
+    elif counter == 3 :
+
+        session['age1'] = request.form['Body']
+        resp = twiml.Response()
+        resp.message(main.sexe())
+
+    elif counter == 4 :
+
+        session['sexe1'] = request.form['Body']
+        user_info = [name1, age1, sexe1]
+        response = user_info[0] + user_info[1] + user_info[2]
+        resp = twiml.Response()
+
+        resp.message(response)
+
+    else :
+        name = request.form['Body']
+        resp = twiml.Response()
+        resp.message("name")
+    # Put it in a TwiML response
+
+    ##[name, sexe, age]
+
     return str(resp)
 
 if __name__ == "__main__":
