@@ -40,6 +40,8 @@ for i in symptoms:
 # Access question asked by API
 #print(request.question)
 #
+
+conditionID = None
 max = 0
 while max < 0.7:
 
@@ -69,6 +71,7 @@ while max < 0.7:
     for i in request.conditions:
         if max < i['probability']:
             max = i['probability']
+            conditionID = i["id"]
 
 
 #print(request.question.items)  # list of related evidences with possible answers
@@ -81,8 +84,14 @@ while max < 0.7:
 # Access list of conditions with probabilities
 #print(request.conditions)
 #print(request.conditions[0]['id'])
-print(request.conditions[0]['name'])
-print(request.conditions[0]['probability'])
+
+#print(max)
+#print(conditionID)
+for i in request.conditions:
+    print(i['name'])
+    print(i['probability'])
+
+#print(api.explain(request, target_id='c_62'))
 
 # # Next update the request and get next question:
 # # Just example, the id and answer shall be taken from the real user answer
