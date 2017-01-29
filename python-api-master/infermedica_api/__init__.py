@@ -8,7 +8,7 @@ Infermedica Python API client provides access to powerful medical diagnostic API
 Basic usage:
 
    >>> import infermedica_api
-   >>> api = infermedica_api.API(app_id='YOUR_APP_ID', app_key='YOUR_APP_KEY')
+   >>> api = infermedica_api.API(app_id='eb66ec4d', app_key='0dd627685ea5a3453973ea6aab7f36c1')
    >>> print(api.info())
    {
      "updated_at": "2015-03-12T00:39:34+01:00",
@@ -20,7 +20,7 @@ Basic usage:
 First configure the API:
 
    >>> import infermedica_api
-   >>> infermedica_api.configure(app_id='YOUR_APP_ID', app_key='YOUR_APP_KEY')
+   >>> infermedica_api.configure(app_id='eb66ec4d', app_key='0dd627685ea5a3453973ea6aab7f36c1')
 
 ... and then in any module just import infermedica module and get configured API object:
 

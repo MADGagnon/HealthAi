@@ -502,7 +502,7 @@ def configure(options=None, **config):
 
     ... or:
         >>> import infermedica_api
-        >>> infermedica_api.configure(app_id='YOUR_APP_ID', app_key='YOUR_APP_KEY')
+        >>> infermedica_api.configure(app_id='eb66ec4d', app_key='0dd627685ea5a3453973ea6aab7f36c1')
 
     :param options: Dict with configuration data
     :type options: dict
