@@ -20,7 +20,7 @@ def set_up():
         sexe = str(input("What's your biological sexe?\n"))
         age = str(input("What's your age?\n"))
         
-        userInfo = name + " " + sexe + " " + age
+        userInfo = [name, sexe, age]
         return userInfo
             
 
